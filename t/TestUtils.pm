@@ -1,14 +1,10 @@
 package t::TestUtils;
 use strict;
 use warnings;
-use JSON qw/decode_json encode_json/;
+use JSON qw/decode_json/;
 use Test::More;
 use Test::Groonga;
 use Exporter 'import';
-use Data::Dumper;
-$Data::Dumper::Sortkeys = 1;
-$Data::Dumper::Indent   = 1;
-$Data::Dumper::Terse    = 1;
 
 our @EXPORT = qw/prepare test_cmd escape/;
 
