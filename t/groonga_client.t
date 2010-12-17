@@ -12,7 +12,7 @@ subtest 'cmd' => sub {
 
     my ($server, $client) = prepare();
 
-    test_cmd($client, "table_create --name Site --flags TABLE_HASH_KEY --key_type ShortText", 'true');
+    test_cmd($client, "table_create --name Site --flags TABLE_HASH_KEY --key_type ShortText");
     
     $server->stop();
 };

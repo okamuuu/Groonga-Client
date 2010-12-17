@@ -28,20 +28,16 @@ sub prepare {
 sub test_cmd {
     my ($client, $cmd, $expect) = @_;
 
-    diag "cmd      : $cmd";
-    
     my $json = $client->cmd($cmd);
     my $data = decode_json($json);
-   
-    diag "get json : $json";
  
     my $status_code = $data->[0]->[0];
     my $elapsed     = $data->[0]->[2];
     my $result      = $data->[1];
 
-    is $status_code, 0, "status code   : '0'";
-    diag "elapsed  : $elapsed";
-    is_deeply $result, $expect, "expect result : " . Dumper "$result";
+    diag "cmd      : $cmd\n" . "elapsed  : $elapsed\n" . "get json : $json" .
+
+    is $status_code, 0, "status code 0 ok";
 }
 
 sub escape {
