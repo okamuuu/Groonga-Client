@@ -35,9 +35,12 @@ sub test_cmd {
     my $elapsed     = $data->[0]->[2];
     my $result      = $data->[1];
 
-    diag "cmd      : $cmd\n" . "elapsed  : $elapsed\n" . "get json : $json" .
+    note
+        "cmd      : $cmd\n"
+      . "elapsed  : $elapsed\n"
+      . "get json : $json";
 
-    is $status_code, 0, "status code 0 ok";
+    is $status_code, 0;
 }
 
 sub escape {
