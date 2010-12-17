@@ -3,9 +3,9 @@ use strict;
 use warnings;
 use Carp ();
 
-use Class::Accessor::Lite ( ro => [qw/bin port host/ ] );
+use Class::Accessor::Lite 0.05 ( ro => [qw/bin port host/ ] );
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 sub new {
     my $class = shift;
