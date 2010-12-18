@@ -16,7 +16,7 @@ subtest 'like JavaScript' => sub {
     test_cmd($client, "column_create --table Site --name title --flags COLUMN_SCALAR --type ShortText" );
     test_cmd($client, "select --table Site" );
     test_cmd($client, 'table_create --name Terms --flags "TABLE_PAT_KEY|KEY_NORMALIZE" --key_type ShortText --default_tokenizer TokenBigram');
-    test_cmd($client, "column_create --table Terms --name blog_title --flags 'COLUMN_INDEX|WITH_POSITION' --type Site --source title" );
+    test_cmd($client, 'column_create --table Terms --name blog_title --flags "COLUMN_INDEX|WITH_POSITION" --type Site --source title');
 
     my $json = << "END_OF";
 [
@@ -34,7 +34,7 @@ END_OF
 
     my $escaped = escape($json);
 
-    test_cmd($client, "load --table Site '$escaped'");
+    test_cmd($client, "load --table Site $escaped");
     test_cmd($client, 'select --table Site');
     test_cmd($client, 'select --table Site --filter "_id<=1" --output_columns _id,_key');
     test_cmd($client, 'select --table Site --filter "_id>=4\ &&\ _id<=6" --output_columns _id,_key');
@@ -42,15 +42,6 @@ END_OF
 };
 
 subtest 'sort by score' => sub {
-    ### this case, not use built-in function rand(), is ok.
-    test_cmd( $client,
-'select --table Site --filter "1" --scorer "_score=1" --output_columns _id,_key,_score --sortby _score'
-    );
-
-  SKIP: {
-        skip
-          "I don't notice how to use groonga built-in function in command :(",
-          2;
 
         test_cmd( $client,
 'select --table Site --filter "1" --scorer "_score=rand()" --output_columns _id,_key,_score --sortby _score'
@@ -58,12 +49,12 @@ subtest 'sort by score' => sub {
         test_cmd( $client,
 'select --table Site --filter "1" --scorer "_score=rand()" --output_columns _id,_key,_score --sortby _score'
         );
-    }
 };
 
 subtest 'location' => sub {
 
-    test_cmd($client, "column_create --table Site --name location --type WGS84GeoPoint" );
+    test_cmd( $client,
+        "column_create --table Site --name location --type WGS84GeoPoint" );
 
     my $json = << "END_OF";
 [
@@ -73,21 +64,21 @@ subtest 'location' => sub {
 END_OF
 
     my $escaped = escape($json);
-    test_cmd($client, "load --table Site '$escaped'");
-    test_cmd($client, 'select --table Site --query "_id:1\ OR\ _id:2" --output_columns _key,location');
+    test_cmd( $client, "load --table Site $escaped" );
+    test_cmd( $client,
+'select --table Site --query "_id:1\ OR\ _id:2" --output_columns _key,location'
+    );
 
-  SKIP: {
-        skip
-          "I don't notice how to use groonga built-in function in command :(",
-          3;
-
-        test_cmd( $client,
+    test_cmd( $client,
 'select --table Site --query "_id:1\ OR\ _id:2" --output_columns _key,location,_score --scorer "_score=geo_distance(location,\"128515259x503187188\")"'
-        );
+    );
 
-        test_cmd($client, qq/select --table Site --query "_id:1 OR _id:2" --output_columns _key,location,_score --scorer '_score = geo_distance(location,"128515259x503187188")'/);
-        test_cmd($client, qq/select --table Site --output_columns _key,location --filter 'geo_in_circle(location, "128515259x503187188", 5000)'/);
-    }
+    test_cmd( $client,
+'select --table Site --query "_id:1\ OR\ _id:2" --output_columns _key,location,_score --scorer "_score=geo_distance(location,\"128515259x503187188\")"'
+    );
+    test_cmd( $client,
+'select --table Site --output_columns _key,location --filter "geo_in_circle(location, \"128515261x503187190\", 5000)"'
+    );
 };
 
 $server->stop;

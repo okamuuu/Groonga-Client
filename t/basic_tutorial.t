@@ -15,8 +15,8 @@ subtest 'create table' => sub {
     note "Here are ways to create table and show created table."
       . " Make sure this table has _id and _key columns.";
 
-    test_cmd($client, "table_create --name Site --flags TABLE_HASH_KEY --key_type ShortText");
-    test_cmd($client, "select --table Site" );
+    test_cmd($client, 'table_create --name Site --flags TABLE_HASH_KEY --key_type ShortText');
+    test_cmd($client, 'select --table Site' );
 
 };
 
@@ -25,7 +25,7 @@ subtest 'add columns' => sub {
     note "Here are ways to add columns."
       . " Please Remember this columns is SCALAR type.";
 
-    test_cmd( $client,"column_create --table Site --name title --flags COLUMN_SCALAR --type ShortText");
+    test_cmd( $client, "column_create --table Site --name title --flags COLUMN_SCALAR --type ShortText");
     test_cmd( $client, "select --table Site" );
 
 };
@@ -36,13 +36,13 @@ subtest 'create vocabulary table for full-text search' => sub {
       . " KEY_NORMALIZE means normalize the key vocab."
       . " TokenBigram is always known as 'N-gram'";
 
-    test_cmd($client, "table_create --name Terms --flags 'TABLE_PAT_KEY|KEY_NORMALIZE' --key_type ShortText --default_tokenizer TokenBigram");
+    test_cmd($client, 'table_create --name Terms --flags "TABLE_PAT_KEY|KEY_NORMALIZE" --key_type ShortText --default_tokenizer TokenBigram');
     test_cmd( $client, "select --table Terms" );
 
 };
 
 subtest 'create index column for full-text search' => sub {
-    test_cmd($client, "column_create --table Terms --name blog_title --flags 'COLUMN_INDEX|WITH_POSITION' --type Site --source title");
+    test_cmd($client, 'column_create --table Terms --name blog_title --flags "COLUMN_INDEX|WITH_POSITION" --type Site --source title');
     test_cmd( $client, "select --table Terms" );
 };
 
@@ -64,7 +64,7 @@ END_OF
     note "If use groonga in interactive mode, you don't escape quote and white space.";
     my $escaped_json = escape($json);    
     
-    test_cmd($client, "load --table Site '$escaped_json'");
+    test_cmd($client, "load --table Site $escaped_json");
     test_cmd($client, "select --table Site" );
 };
 

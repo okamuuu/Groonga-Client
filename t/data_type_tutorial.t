@@ -24,7 +24,7 @@ subtest 'Various data types' => sub {
     my $json = '[{"_key":"sample","number":12345,"float":42.195,"string":"GROONGA","time":1234567890.12}]';
     my $escaped = escape($json);
 
-    test_cmd($client, "load --table Type '$escaped'");
+    test_cmd($client, "load --table Type $escaped");
     test_cmd($client, "select --table Type");
 };
 
@@ -41,7 +41,7 @@ subtest 'table type' => sub {
     my $json = '[{"_key":"http://example.org/","title":"this","link":"http://example.net/"}]';
     my $escaped = escape($json);    
  
-    test_cmd($client, "load --table Site '$escaped'");
+    test_cmd($client, "load --table Site $escaped");
     test_cmd($client, 'select --table Site --output_columns _key,title,link._key,link.title --query title:@this'); 
 
 };
@@ -56,7 +56,7 @@ subtest 'vector column' => sub {
     my $json = '[{"_key":"http://example.org/","title":"this","links":["http://example.net/","http://example.org/","http://example.com/"]}]';
 
     my $escaped = escape($json);
-    test_cmd($client, "load --table Site '$escaped'");
+    test_cmd($client, "load --table Site $escaped");
     test_cmd($client, 'select --table Site --output_columns _key,title,links._key,links.title --query title:@this');   
 };
 

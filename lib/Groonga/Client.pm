@@ -5,7 +5,7 @@ use Carp ();
 
 use Class::Accessor::Lite 0.05 ( ro => [qw/bin port host/ ] );
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 sub new {
     my $class = shift;
@@ -39,7 +39,7 @@ sub cmd {
     my $host = $self->host;
     my $bin  = $self->bin;
 
-    `$bin -p $port -c $host $cmd`; # return json 
+    `$bin -p $port -c $host '$cmd'`; # return json 
 }
 
 1;

@@ -1,6 +1,11 @@
 Revision history for Perl extension Groonga::Client
 
-0.01    2010-12-17 
+0.03    2010-12-18 
+        - add t/data_type_tutorial.t
+        - add t/search_condition_tutorial.t
+        - modified issue2 http://github.com/okamuuu/Groonga-Client/issues/issue/2
+
+0.02    2010-12-17 
         - add t/TestUtils.pm 
         - add t/basic_tutorial.t
         - spcify version number of Class::Accessor::Lite
