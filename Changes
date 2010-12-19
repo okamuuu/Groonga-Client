@@ -1,5 +1,9 @@
 Revision history for Perl extension Groonga::Client
 
+0.04    2010-12-19 
+        - use File::Which
+        - use Test::TCP in place of Test::Groonga.
+
 0.03    2010-12-18 
         - add t/data_type_tutorial.t
         - add t/search_condition_tutorial.t
