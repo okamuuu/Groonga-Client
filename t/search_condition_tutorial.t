@@ -4,7 +4,6 @@ use t::TestUtils qw/prepare test_cmd escape/;
 use Carp ();
 use Test::More;
 use Test::Exception;
-use Test::Groonga;
 
 BEGIN { use_ok 'Groonga::Client' }
 

@@ -4,7 +4,6 @@ use t::TestUtils qw/prepare test_cmd escape/;
 use Carp ();
 use Test::More;
 use Test::Exception;
-use Test::Groonga;
 
 BEGIN { use_ok 'Groonga::Client' }
 
@@ -27,7 +26,6 @@ subtest 'Various data types' => sub {
     test_cmd($client, "load --table Type $escaped");
     test_cmd($client, "select --table Type");
 };
-
 
 subtest 'table type' => sub {
 

@@ -13,6 +13,8 @@ our @EXPORT = qw/prepare test_cmd escape/;
 sub prepare {
 
     my $bin = scalar File::Which::which('groonga');
+    plan skip_all => 'groonga binary is not found' unless defined $bin;
+
     my $db  = File::Temp::tmpnam();
 
     my $server = Test::TCP->new(
