@@ -4,6 +4,7 @@ use warnings;
 use JSON qw/decode_json/;
 use Test::More;
 use Test::TCP;
+use File::Spec ();
 use File::Which ();
 use File::Temp ();
 use Exporter 'import';
@@ -15,7 +16,12 @@ sub prepare {
     my $bin = scalar File::Which::which('groonga');
     plan skip_all => 'groonga binary is not found' unless defined $bin;
 
-    my $db  = File::Temp::tmpnam();
+    my $db = File::Spec->catfile(
+        File::Temp::tempdir( CLEANUP => 1 ),
+        'test.groonga.db'
+      );
+
+warn $db;
 
     my $server = Test::TCP->new(
         code => sub {
