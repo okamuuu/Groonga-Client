@@ -60,6 +60,6 @@ subtest 'vector column' => sub {
     test_cmd($client, 'select --table Site --output_columns _key,title,links._key,links.title --query title:@this');   
 };
 
-$server->stop;
+undef $server;
 
 done_testing;

@@ -1,6 +1,7 @@
 package Groonga::Client;
 use strict;
 use warnings;
+use File::Which ();
 use Carp ();
 
 use Class::Accessor::Lite 0.05 ( ro => [qw/bin port host/ ] );
@@ -16,12 +17,9 @@ sub new {
     
     Carp::croak("missing mandatory parameter 'port'...") unless $port;
     Carp::croak("missing mandatory parameter 'host'...") unless $host;
-    
-    my $bin = `which groonga 2> /dev/null`;
-    
-    Carp::croak("not found cmd 'groonga'...") unless $bin;
-
-    chomp($bin);
+   
+    my $bin = scalar File::Which::which('groonga'); 
+    Carp::croak('groonga binary is not found') unless $bin;
 
     return bless {
         bin   => $bin,

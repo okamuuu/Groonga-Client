@@ -3,19 +3,32 @@ use strict;
 use warnings;
 use JSON qw/decode_json/;
 use Test::More;
-use Test::Groonga;
+use Test::TCP;
+use File::Which ();
+use File::Temp ();
 use Exporter 'import';
 
 our @EXPORT = qw/prepare test_cmd escape/;
 
 sub prepare {
-    
-    my $server = Test::Groonga->new();
-    $server->start();
+
+    my $bin = scalar File::Which::which('groonga');
+    my $db  = File::Temp::tmpnam();
+
+    my $server = Test::TCP->new(
+        code => sub {
+            my $port = shift;
+
+            # -s : server mode
+            # -n : create new database
+            exec $bin, '-s', '--port', $port, '-n', $db;
+            die "cannot execute $bin: $!";
+        },
+    );
 
     my $client = Groonga::Client->new(
         port => $server->port,
-        host => $server->host,
+        host => 'localhost',
     );
 
     return ($server, $client);

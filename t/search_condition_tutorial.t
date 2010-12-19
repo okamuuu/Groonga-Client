@@ -81,7 +81,7 @@ END_OF
     );
 };
 
-$server->stop;
+undef $server;
 
 done_testing;
 

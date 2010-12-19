@@ -90,8 +90,7 @@ subtest 'sort' => sub {
 
 };
 
-
-$server->stop();
+undef $server;
 
 done_testing();
 
