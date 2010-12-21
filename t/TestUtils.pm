@@ -3,36 +3,16 @@ use strict;
 use warnings;
 use JSON qw/decode_json/;
 use Test::More;
-use Test::TCP;
-use File::Spec ();
-use File::Which ();
-use File::Temp ();
+use Test::Groonga;
 use Exporter 'import';
 
-our @EXPORT = qw/prepare test_cmd escape/;
+our @EXPORT = qw/groonga_bin prepare test_cmd escape/;
+
+sub groonga_bin { Test::Groonga::_find_groonga_bin(); }
 
 sub prepare {
 
-    my $bin = scalar File::Which::which('groonga');
-    plan skip_all => 'groonga binary is not found' unless defined $bin;
-
-    my $db = File::Spec->catfile(
-        File::Temp::tempdir( CLEANUP => 1 ),
-        'test.groonga.db'
-      );
-
-warn $db;
-
-    my $server = Test::TCP->new(
-        code => sub {
-            my $port = shift;
-
-            # -s : server mode
-            # -n : create new database
-            exec $bin, '-s', '--port', $port, '-n', $db;
-            die "cannot execute $bin: $!";
-        },
-    );
+    my $server = Test::Groonga->gqtp();
 
     my $client = Groonga::Client->new(
         port => $server->port,
