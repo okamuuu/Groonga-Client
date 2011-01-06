@@ -1,5 +1,8 @@
 Revision history for Perl extension Groonga::Client
 
+0.05    2011-01-06 
+        - use pipe, As a result, I cut unwanted sub escape().
+
 0.04    2010-12-19 
         - use File::Which
         - use Test::TCP in place of Test::Groonga.

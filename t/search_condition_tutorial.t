@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-use t::TestUtils qw/prepare test_cmd escape/;
+use t::TestUtils qw/prepare test_cmd/;
 use Carp ();
 use Test::More;
 use Test::Exception;
@@ -32,13 +32,11 @@ subtest 'like JavaScript' => sub {
 ]
 END_OF
 
-    my $escaped = escape($json);
-
-    test_cmd($client, "load --table Site $escaped");
+    test_cmd($client, "load --table Site $json");
     test_cmd($client, 'select --table Site');
     test_cmd($client, 'select --table Site --filter "_id<=1" --output_columns _id,_key');
-    test_cmd($client, 'select --table Site --filter "_id>=4\ &&\ _id<=6" --output_columns _id,_key');
-    test_cmd($client, 'select --table Site --filter "_id\ <=\ 2\ ||\ _id\ >=\ 7" --output_columns _id,_key');
+    test_cmd($client, 'select --table Site --filter "_id>=4 && _id<=6" --output_columns _id,_key');
+    test_cmd($client, 'select --table Site --filter "_id <= 2 || _id >= 7" --output_columns _id,_key');
 };
 
 subtest 'sort by score' => sub {
@@ -63,21 +61,21 @@ subtest 'location' => sub {
 ]
 END_OF
 
-    my $escaped = escape($json);
-    test_cmd( $client, "load --table Site $escaped" );
+    test_cmd( $client, "load --table Site $json" );
     test_cmd( $client,
-'select --table Site --query "_id:1\ OR\ _id:2" --output_columns _key,location'
+'select --table Site --query "_id:1 OR _id:2" --output_columns _key,location'
+    );
+    
+    test_cmd( $client,
+'select --table Site --query "_id:1 OR _id:2" --output_columns _key,location,_score --scorer "_score=geo_distance(location,\"128515259x503187188\")"'
     );
 
     test_cmd( $client,
-'select --table Site --query "_id:1\ OR\ _id:2" --output_columns _key,location,_score --scorer "_score=geo_distance(location,\"128515259x503187188\")"'
+'select --table Site --query "_id:1 OR _id:2" --output_columns _key,location,_score --scorer "_score=geo_distance(location,\"128515259x503187188\")"'
     );
-
+    
     test_cmd( $client,
-'select --table Site --query "_id:1\ OR\ _id:2" --output_columns _key,location,_score --scorer "_score=geo_distance(location,\"128515259x503187188\")"'
-    );
-    test_cmd( $client,
-'select --table Site --output_columns _key,location --filter "geo_in_circle(location, \"128515261x503187190\", 5000)"'
+q{select --table Site --output_columns _key,location --filter "geo_in_circle(location, \"128515261x503187190\", 5000)"}
     );
 };
 

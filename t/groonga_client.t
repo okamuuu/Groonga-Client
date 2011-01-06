@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-use t::TestUtils qw/prepare test_cmd escape/;
+use t::TestUtils qw/prepare test_cmd/;
 use Carp ();
 use Test::More;
 use Test::Exception;

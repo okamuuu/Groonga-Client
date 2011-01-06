@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-use t::TestUtils qw/prepare test_cmd escape/;
+use t::TestUtils qw/prepare test_cmd/;
 use Carp ();
 use Test::More;
 use Test::Exception;
@@ -61,10 +61,10 @@ subtest 'store data into table' => sub {
 ] 
 END_OF
     
-    note "If use groonga in interactive mode, you don't escape quote and white space.";
-    my $escaped_json = escape($json);    
+    note "If use groonga in not interactive mode, you have to escape quote and white space.";
     
-    test_cmd($client, "load --table Site $escaped_json");
+    #test_cmd($client, "load --table Site $escaped_json");
+    test_cmd($client, "load --table Site $json");
     test_cmd($client, "select --table Site" );
 };
 

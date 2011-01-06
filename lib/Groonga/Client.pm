@@ -1,6 +1,7 @@
 package Groonga::Client;
 use strict;
 use warnings;
+use JSON ();
 use File::Which ();
 use Carp ();
 
@@ -37,7 +38,8 @@ sub cmd {
     my $host = $self->host;
     my $bin  = $self->bin;
 
-    `$bin -p $port -c $host '$cmd'`; # return json 
+    ### I don't mind about know windows OS...
+    `echo '$cmd' | $bin -p $port -c $host`;
 }
 
 1;
