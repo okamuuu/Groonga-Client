@@ -21,12 +21,15 @@ subtest 'Various data types' => sub {
     test_cmd($client, 'column_create --table Type --name string --type ShortText');
     test_cmd($client, 'column_create --table Type --name time --type Time');
 
-    my $json = '[{"_key":"sample","number":"12345","float":"42.195","string":"GROONGA","time":"1234567890.12"}]';
+    my $json = << "END_OF";
+[
+{"_key":"sample","number":"12345","float":"42.195","string":"GROONGA","time":"1234567890.12"}
+]
+END_OF
 
     test_cmd($client, "load --table Type $json");
     test_cmd($client, "select --table Type");
 };
-
 
 subtest 'table type' => sub {
 
@@ -37,8 +40,12 @@ subtest 'table type' => sub {
     test_cmd($client, "column_create --table Site --name title --flags COLUMN_SCALAR --type ShortText" );
     test_cmd($client, 'column_create --table Site --name link --type Site');        
 
-    my $json = '[{"_key":"http://example.org/","title":"this","link":"http://example.net/"}]';
- 
+    my $json = << "END_OF";
+[
+{"_key":"http://example.org/","title":"this","link":"http://example.net/"}
+]
+END_OF
+
     test_cmd($client, "load --table Site $json");
     test_cmd($client, 'select --table Site --output_columns _key,title,link._key,link.title --query title:@this'); 
 
@@ -51,12 +58,16 @@ subtest 'vector column' => sub {
     ### this case, create column named links. not link.
     test_cmd($client, 'column_create --table Site --name links --flags COLUMN_VECTOR --type Site');
 
-    my $json = '[{"_key":"http://example.org/","title":"this","links":["http://example.net/","http://example.org/","http://example.com/"]}]';
+    my $json = << "END_OF";
+[
+{"_key":"http://example.org/","title":"this","links":["http://example.net/","http://example.org/","http://example.com/"]}
+]
+END_OF
 
     test_cmd($client, "load --table Site $json");
     test_cmd($client, 'select --table Site --output_columns _key,title,links._key,links.title --query title:@this');   
 };
 
-undef $server;
+$server->stop;
 
 done_testing;

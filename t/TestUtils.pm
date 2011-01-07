@@ -23,7 +23,7 @@ sub prepare {
 }
 
 sub test_cmd {
-    my ($client, $cmd, $expect) = @_;
+    my ($client, $cmd) = @_;
 
     my $json = $client->cmd($cmd);
     my $data = decode_json($json);
