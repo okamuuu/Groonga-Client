@@ -21,13 +21,9 @@ subtest 'Various data types' => sub {
     test_cmd($client, 'column_create --table Type --name string --type ShortText');
     test_cmd($client, 'column_create --table Type --name time --type Time');
 
-    my $json = << "END_OF";
-[
-{"_key":"sample","number":"12345","float":"42.195","string":"GROONGA","time":"1234567890.12"}
-]
-END_OF
+    my $json = '[{"_key":"sample","number":"12345","float":"42.195","string":"GROONGA","time":"1234567890.12"}]';
 
-    test_cmd($client, "load --table Type $json");
+    test_cmd($client, "load --table Type \n $json");
     test_cmd($client, "select --table Type");
 };
 

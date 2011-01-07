@@ -37,9 +37,8 @@ sub cmd {
     my $port = $self->port;
     my $host = $self->host;
     my $bin  = $self->bin;
-
-    ### I don't mind about know windows OS...
-    `/bin/echo '$cmd' | $bin -p $port -c $host`;
+    
+   `/bin/echo '$cmd' | $bin -p $port -c $host`;
 }
 
 1;
