@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-use t::TestUtils qw/prepare test_cmd/;
+use t::TestUtils qw/prepare failed_cmd test_cmd/;
 use Carp ();
 use Test::More;
 use Test::Exception;
@@ -22,8 +22,9 @@ subtest 'Various data types' => sub {
     test_cmd($client, 'column_create --table Type --name time --type Time');
 
     my $json = '[{"_key":"sample","number":"12345","float":"42.195","string":"GROONGA","time":"1234567890.12"}]';
-
-    test_cmd($client, "load --table Type \n $json");
+    
+    failed_cmd($client, "load --table Type --values $json");
+    test_cmd($client, "load --table Type --values \n $json");
     test_cmd($client, "select --table Type");
 };
 

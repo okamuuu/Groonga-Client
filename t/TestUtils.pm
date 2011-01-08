@@ -8,7 +8,7 @@ use File::Which ();
 use File::Temp ();
 use Exporter 'import';
 
-our @EXPORT = qw/prepare test_cmd/;
+our @EXPORT = qw/prepare failed_cmd test_cmd/;
 
 sub prepare {
 
@@ -20,6 +20,21 @@ sub prepare {
     );
 
     return ($server, $client);
+}
+
+sub failed_cmd {
+    my ($client, $cmd) = @_;
+
+    my $json = $client->cmd($cmd);
+    my $data = decode_json($json);
+ 
+warn    my $status_code = $data->[0]->[0];
+
+    note
+        "cmd : $cmd\n"
+    .   "this cmd will faile.";
+
+    ok $status_code != 0;
 }
 
 sub test_cmd {
@@ -38,12 +53,6 @@ sub test_cmd {
       . "get json : $json";
 
     is $status_code, 0;
-}
-
-sub escape {
-    my $string = shift;
-    $string =~ s/(['"\s])/\\$1/sg;
-    return $string;
 }
 
 1;
