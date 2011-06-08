@@ -4,7 +4,6 @@ use t::TestUtils qw/prepare test_cmd/;
 use Carp ();
 use Test::More;
 use Test::Exception;
-#use Test::Groonga;
 
 BEGIN { use_ok 'Groonga::Client' }
 
@@ -14,7 +13,7 @@ subtest 'cmd' => sub {
 
     test_cmd($client, "table_create --name Site --flags TABLE_HASH_KEY --key_type ShortText");
     
-    undef $server;
+    $server->stop;
 };
 
 
